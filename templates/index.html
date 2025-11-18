@@ -4,14 +4,33 @@
     <title>ISS Telemetry Tracker</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
 <h1>ISS Telemetry Tracker</h1>
+
+<!-- 新增的仪表板部分 -->
+<div class="dashboard">
+    <div class="dashboard-card">
+        <h2>Latest ISS Position</h2>
+        <div id="latestPosition">
+            <p><strong>Time:</strong> <span id="latestTime">Loading...</span></p>
+            <p><strong>Latitude:</strong> <span id="latestLat">Loading...</span></p>
+            <p><strong>Longitude:</strong> <span id="latestLon">Loading...</span></p>
+            <p><strong>Altitude:</strong> <span id="latestAlt">Loading...</span> km</p>
+            <p><strong>Velocity:</strong> <span id="latestVel">Loading...</span> km/h</p>
+        </div>
+    </div>
+    
+    <div class="dashboard-card">
+        <h2>Recent History</h2>
+        <div id="recentHistory">
+            <p>Loading history...</p>
+        </div>
+    </div>
+</div>
 
 <div id="map"></div>
 
