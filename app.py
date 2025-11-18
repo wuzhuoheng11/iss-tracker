@@ -1,4 +1,12 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, send_from_directory
+import os
+
+app = Flask(__name__, static_folder='static', template_folder='templates')
+
+# 确保静态文件正确路由
+@app.route('/static/<path:filename>')
+def static_files(filename):
+    return send_from_directory('static', filename)from flask import Flask, jsonify, render_template
 import requests
 import sqlite3
 import threading
