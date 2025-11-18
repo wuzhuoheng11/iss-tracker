@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ISS Telemetry Tracker</title>
+    <title>ISS Live Map and Data Dashboard</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -9,34 +9,111 @@
 </head>
 <body>
 
-<h1>ISS Telemetry Tracker</h1>
+<h1>ISS Live Map and Data Dashboard</h1>
 
-<!-- 新增的仪表板部分 -->
-<div class="dashboard">
-    <div class="dashboard-card">
-        <h2>Latest ISS Position</h2>
-        <div id="latestPosition">
-            <p><strong>Time:</strong> <span id="latestTime">Loading...</span></p>
-            <p><strong>Latitude:</strong> <span id="latestLat">Loading...</span></p>
-            <p><strong>Longitude:</strong> <span id="latestLon">Loading...</span></p>
-            <p><strong>Altitude:</strong> <span id="latestAlt">Loading...</span> km</p>
-            <p><strong>Velocity:</strong> <span id="latestVel">Loading...</span> km/h</p>
+<!-- 分析摘要 -->
+<div class="section">
+    <h2>Analytics Summary</h2>
+    <div class="analytics-grid">
+        <div class="analytics-item">
+            <strong>Max Longitude:</strong> <span id="maxLon">-</span>
+        </div>
+        <div class="analytics-item">
+            <strong>Min Longitude:</strong> <span id="minLon">-</span>
+        </div>
+        <div class="analytics-item">
+            <strong>Altitude Change Count:</strong> <span id="altChangeCount">-</span> (changes > 0.001 km)
+        </div>
+        <div class="analytics-item">
+            <strong>Total Altitude Change (km):</strong> <span id="totalAltChange">-</span>
         </div>
     </div>
-    
-    <div class="dashboard-card">
-        <h2>Recent History</h2>
-        <div id="recentHistory">
-            <p>Loading history...</p>
+    <p class="note">Note: Values update every 6 hours from stored analytics. Dashboard auto-refreshes every 20 seconds.</p>
+</div>
+
+<hr>
+
+<!-- 最新位置 -->
+<div class="section">
+    <h2>Latest ISS Position</h2>
+    <div class="position-grid">
+        <div class="position-item">
+            <strong>Time:</strong> <span id="latestTime">Loading...</span>
+        </div>
+        <div class="position-item">
+            <strong>Latitude:</strong> <span id="latestLat">Loading...</span>
+        </div>
+        <div class="position-item">
+            <strong>Longitude:</strong> <span id="latestLon">Loading...</span>
+        </div>
+        <div class="position-item">
+            <strong>Altitude:</strong> <span id="latestAlt">Loading...</span> km
+        </div>
+        <div class="position-item">
+            <strong>Velocity:</strong> <span id="latestVel">Loading...</span> km/h
         </div>
     </div>
 </div>
 
-<div id="map"></div>
+<hr>
 
-<div class="charts">
-    <canvas id="altitudeChart"></canvas>
-    <canvas id="longitudeChart"></canvas>
+<!-- 地图 -->
+<div class="section">
+    <h2>ISS Live Map</h2>
+    <div id="map"></div>
+</div>
+
+<hr>
+
+<!-- 遥测图表 -->
+<div class="section">
+    <h2>Telemetry Charts (Last 100 Entries)</h2>
+    <div class="charts-grid">
+        <div class="chart-container">
+            <h3>ISS Altitude Over Time</h3>
+            <canvas id="altitudeChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <h3>ISS Velocity Over Time</h3>
+            <canvas id="velocityChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<!-- 最近历史 -->
+<div class="section">
+    <h2>Recent History (Last 10 Entries)</h2>
+    <div id="recentHistory">
+        <p>Loading history...</p>
+    </div>
+</div>
+
+<hr>
+
+<!-- 数据表格 -->
+<div class="section">
+    <h2>ISS Data Table (Last 1000 Entries)</h2>
+    <div class="table-container">
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>Altitude (km)</th>
+                    <th>Velocity (km/h)</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr>
+                    <td colspan="6">Loading data...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script src="/static/script.js"></script>
