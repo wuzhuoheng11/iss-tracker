@@ -3,8 +3,9 @@ import requests
 import sqlite3
 import threading
 import time
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', template_folder='templates')
 
 DB_NAME = "database.db"
 API_URL = "https://api.wheretheiss.at/v1/satellites/25544"
@@ -28,7 +29,6 @@ def init_db():
     conn.commit()
     conn.close()
 
-
 # --------------------------
 # SAVE TELEMETRY
 # --------------------------
@@ -42,7 +42,6 @@ def save_telemetry(data):
     conn.commit()
     conn.close()
 
-
 # --------------------------
 # BACKGROUND FETCHER
 # --------------------------
@@ -55,9 +54,7 @@ def fetch_iss_data():
                 save_telemetry(data)
         except Exception as e:
             print("Error fetching:", e)
-
-        time.sleep(5)  # every 5 seconds
-
+        time.sleep(5)
 
 # --------------------------
 # API: Latest data
@@ -81,7 +78,6 @@ def latest_data():
         "velocity": row[4]
     })
 
-
 # --------------------------
 # API: Full history
 # --------------------------
@@ -104,7 +100,6 @@ def history():
         for r in rows
     ])
 
-
 # --------------------------
 # FRONTEND INDEX PAGE
 # --------------------------
@@ -112,16 +107,12 @@ def history():
 def index():
     return render_template("index.html")
 
-
 # --------------------------
 # MAIN
 # --------------------------
 if __name__ == "__main__":
     init_db()
-
-    # start background thread
     thread = threading.Thread(target=fetch_iss_data)
     thread.daemon = True
     thread.start()
-
     app.run(host="0.0.0.0", port=5000, debug=False)
