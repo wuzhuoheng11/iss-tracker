@@ -116,12 +116,14 @@ def index():
 # --------------------------
 # MAIN
 # --------------------------
+# 在文件末尾修改为：
 if __name__ == "__main__":
     init_db()
-
+    
     # start background thread
     thread = threading.Thread(target=fetch_iss_data)
     thread.daemon = True
     thread.start()
-
-    app.run(host="0.0.0.0", port=5000)
+    
+    # 开发环境使用这个，生产环境用 gunicorn
+    app.run(host="0.0.0.0", port=5000, debug=False)
